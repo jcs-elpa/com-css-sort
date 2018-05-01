@@ -13,10 +13,10 @@ attribute will sort.
 
 ## Configuration ##
 Type of sorting algorithm you want CSS attribute to sort.<br/>
-    => 0 : Sort in group type. Use `sort-order.ccs' if there is one in the version 
-           control root directory. (Default)<br/>
-    => 1 : Sort in alphabetic order. The `sort-order.ccs' file will be ignore
-           and will not do anything.<br/>
+&nbsp;&nbsp;=> 0 : Sort in group type. Use 'sort-order.ccs' if 
+there is one in the version control root directory. (Default)<br/>
+&nbsp;&nbsp;=> 1 : Sort in alphabetic order. The 'sort-order.ccs' 
+file will be ignore and will not do anything.<br/>
 ```
 (setq com-css-sort-sort-type 0)
 ```
