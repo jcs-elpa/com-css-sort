@@ -12,17 +12,24 @@ You can grab a ccs file from `./ccs_examples/` directory in this repository.
 attribute will sort.
 
 ## Configuration ##
+Type of sorting algorithm you want CSS attribute to sort.<br/>
+    => 0 : Sort in group type. Use `sort-order.ccs' if there is one in the version 
+           control root directory. (Default)<br/>
+    => 1 : Sort in alphabetic order. The `sort-order.ccs' file will be ignore
+           and will not do anything.<br/>
 ```
-;; Type of sorting algorithm you want CSS attribute to sort.
-;;     => 0 : Sort in group type. Use `sort-order.ccs' if there is one in the version 
-;;            control root directory. (Default)
-;;     => 1 : Sort in alphabetic order. The `sort-order.ccs' file will be ignore
-;;            and will not do anything.
 (setq com-css-sort-sort-type 0)
+```
 
-;; Customize your own sorting order programmatically.
-;; If you do not have the `sort-order.ccs' file in the version control root 
-;; directory then this will be use!
+If you don't like the path or file name, you can change it too. This variable is 
+relative path to version control root directory.
+```
+(setq com-css-sort-sort-file "sort-order.ccs")
+```
+
+Customize your own sorting order programmatically. If you do not have the 
+`sort-order.ccs' file in the version control root directory then this will be use!
+```
 (setq com-css-sort-default-attributes-order '("display" "position" "top" "right" "bottom" "left" "float" "clear" 
 "visibility" "opacity" "z-index" "margin" "margin-top" "margin-right" "margin-bottom" "margin-left" "outline"
 "border" "border-top" "border-right" "border-bottom" "border-left" "border-width" "border-top-width" 
