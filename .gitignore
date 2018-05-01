@@ -8,7 +8,7 @@ com-css-sort-pkg.el
 *.elc
 
 # ignore test files.
-sort-order.ccs
+/sort-order.ccs
 
 # ignore I use to not ignore.
 Update_Log.txt
