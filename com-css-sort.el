@@ -4,11 +4,11 @@
 ;; Created date 2018-04-30 14:26:37
 
 ;; Author: Shen, Jen-Chieh <jcs090218@gmail.com>
-;; Description: Mimic Eclipse C-S-o key. (Organeize Imports)
+;; Description: Common way of sorting the CSS attributes.
 ;; Keyword: Common CSS Handy Sort Sorting
 ;; Version: 0.0.1
 ;; Package-Requires: ((cl-lib "0.5") (emacs "24.4") (s "1.12.0"))
-;; URL: https://github.com/jcs090218/organize-imports-java
+;; URL: https://github.com/jcs090218/com-css-sort
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -37,89 +37,176 @@
 
 
 (defvar com-css-sort-sort-type 0
-  "Type of sorting CSS attributes.
+  "Type of sorting CSS attributes algorithm going to use to sort.
 0 : Sort by Type Group.
 1 : Sort by Alphabetic Order.")
 
-(defvar com-css-sort-attributes-order '("display"
-                                        "position"
-                                        "top"
-                                        "right"
-                                        "bottom"
-                                        "left"
-                                        "float"
-                                        "clear"
-                                        "visibility"
-                                        "opacity"
-                                        "z-index"
-                                        "margin"
-                                        "margin-top"
-                                        "margin-right"
-                                        "margin-bottom"
-                                        "margin-left"
-                                        "outline"
-                                        "border"
-                                        "border-top"
-                                        "border-right"
-                                        "border-bottom"
-                                        "border-left"
-                                        "border-width"
-                                        "border-top-width"
-                                        "border-right-width"
-                                        "border-bottom-width"
-                                        "border-left-width"
-                                        "border-style"
-                                        "border-top-style"
-                                        "border-right-style"
-                                        "border-bottom-style"
-                                        "border-left-style"
-                                        "border-color"
-                                        "border-top-color"
-                                        "border-right-color"
-                                        "border-bottom-color"
-                                        "border-left-color"
-                                        "background"
-                                        "background-color"
-                                        "background-image"
-                                        "background-repeat"
-                                        "background-position"
-                                        "cursor"
-                                        "padding"
-                                        "padding-top"
-                                        "padding-right"
-                                        "padding-bottom"
-                                        "padding-left"
-                                        "width"
-                                        "min-width"
-                                        "max-width"
-                                        "height"
-                                        "min-height"
-                                        "max-height"
-                                        "overflow"
-                                        "list-style"
-                                        "caption-side"
-                                        "table-layout"
-                                        "border-collapse"
-                                        "border-spacing"
-                                        "empty-cells"
-                                        "vertical-align"
-                                        "text-align"
-                                        "text-indent"
-                                        "text-transform"
-                                        "text-decoration"
-                                        "line-height"
-                                        "word-spacing"
-                                        "letter-spacing"
-                                        "white-space"
-                                        "color"
-                                        "font"
-                                        "font-family"
-                                        "font-size"
-                                        "font-weight"
-                                        "content"
-                                        "quotes")
+(defvar com-css-sort-sort-file "sort-order.ccs"
+  "File to read the order.
+This file should place somewhere path are relative to the
+version control path.
+This wil replace `com-css-sort-default-attributes-order' if it can.")
+
+(defvar com-css-sort-default-attributes-order
+  '("display"
+    "position"
+    "top"
+    "right"
+    "bottom"
+    "left"
+    "float"
+    "clear"
+    "visibility"
+    "opacity"
+    "z-index"
+    "margin"
+    "margin-top"
+    "margin-right"
+    "margin-bottom"
+    "margin-left"
+    "outline"
+    "border"
+    "border-top"
+    "border-right"
+    "border-bottom"
+    "border-left"
+    "border-width"
+    "border-top-width"
+    "border-right-width"
+    "border-bottom-width"
+    "border-left-width"
+    "border-style"
+    "border-top-style"
+    "border-right-style"
+    "border-bottom-style"
+    "border-left-style"
+    "border-color"
+    "border-top-color"
+    "border-right-color"
+    "border-bottom-color"
+    "border-left-color"
+    "background"
+    "background-color"
+    "background-image"
+    "background-repeat"
+    "background-position"
+    "cursor"
+    "padding"
+    "padding-top"
+    "padding-right"
+    "padding-bottom"
+    "padding-left"
+    "width"
+    "min-width"
+    "max-width"
+    "height"
+    "min-height"
+    "max-height"
+    "overflow"
+    "list-style"
+    "caption-side"
+    "table-layout"
+    "border-collapse"
+    "border-spacing"
+    "empty-cells"
+    "vertical-align"
+    "text-align"
+    "text-indent"
+    "text-transform"
+    "text-decoration"
+    "line-height"
+    "word-spacing"
+    "letter-spacing"
+    "white-space"
+    "color"
+    "font"
+    "font-family"
+    "font-size"
+    "font-weight"
+    "content"
+    "quotes")
   "List of CSS attributes sort order by type.")
 
+(defvar com-css-sort-vc-list '(".bzr"
+                               ".cvs"
+                               ".git"
+                               ".hg"
+                               ".svn")
+  "Version Control list.")
+
+
+(defun com-css-sort-contain-string (in-sub-str in-str)
+  "Check if a string is a substring of another string.
+Return true if contain, else return false.
+IN-SUB-STR : substring to see if contain in the IN-STR.
+IN-STR : string to check by the IN-SUB-STR."
+  (string-match-p (regexp-quote in-sub-str) in-str))
+
+(defun com-css-sort-get-current-dir ()
+  "Return the string of current directory."
+  default-directory)
+
+(defun com-css-sort-file-directory-exists-p (file-path)
+  "Return `True' if the directory/file exists.
+Return `False' if the directory/file not exists.
+
+FILE-PATH : directory/file path."
+  (equal (file-directory-p file-path) t))
+
+(defun com-css-sort-is-vc-dir-p (dir-path)
+  "Return `True' is version control diectory.
+Return `False' not a version control directory.
+DIR-PATH : directory path."
+
+  (let ((tmp-is-vc-dir nil))
+    (dolist (tmp-vc-type com-css-sort-vc-list)
+      (let ((tmp-check-dir (concat dir-path "/" tmp-vc-type)))
+        (when (com-css-sort-file-directory-exists-p tmp-check-dir)
+          (setq tmp-is-vc-dir t))))
+    ;; Return retult.
+    (equal tmp-is-vc-dir t)))
+
+(defun com-css-sort-up-one-dir-string (dir-path)
+  "Go up one directory and return it directory string.
+DIR-PATH : directory path."
+  ;; Remove the last directory in the path.
+  (when (string-match "\\(.*\\)/" dir-path)
+    (match-string 1 dir-path)))
+
+(defun com-css-sort-vc-root-dir ()
+  "Return version control root directory."
+  (let ((tmp-current-dir (com-css-sort-get-current-dir))
+        (tmp-result-dir ""))
+    (while (com-css-sort-contain-string "/" tmp-current-dir)
+      (when (com-css-sort-is-vc-dir-p tmp-current-dir)
+        ;; Return the result, which is the version control path
+        ;; or failed to find the version control path.
+        (setq tmp-result-dir tmp-current-dir))
+      ;; go up one directory.
+      (setq tmp-current-dir (com-css-sort-up-one-dir-string tmp-current-dir)))
+    ;; NOTE(jenchieh): if you do not like `/' at the end remove
+    ;; concat slash function.
+    (concat tmp-result-dir "/")))
+
+(defun com-css-sort-get-string-from-file (file-path)
+  "Return file-path's file content.
+FILE-PATH : file path."
+  (with-temp-buffer
+    (insert-file-contents file-path)
+    (buffer-string)))
+
+(defun com-css-sort-get-ccs-file-list ()
+  "Get the `com-css-sort-sort-file' and turn it into list."
+  (let ((sort-file-path (concat (com-css-sort-vc-root-dir) com-css-sort-sort-file))
+        (attr-list '())
+        (sort-file-content '()))
+    (when (file-exists-p sort-file-path)
+      ;; Get the file content as buffer.
+      (setq sort-file-content (com-css-sort-get-string-from-file sort-file-path))
+      ;; Split the file content buffer into list.
+      (setq attr-list (split-string sort-file-content)))
+    ;; Return the sort order list.
+    attr-list))
 
 ;;;###autoload
 (defun com-css-sort-move-line-up ()
@@ -262,7 +349,16 @@ LINE-LIST : list of line."
   (let (;; List of index, corresponds to true value. (line)
         (index-list '())
         ;; Final return list.
-        (return-line-list '()))
+        (return-line-list '())
+        ;; List we are going to actually use it in our algorithm.
+        ;; This will determine if we use the users file or
+        ;; use the default file.
+        (real-sort-list (com-css-sort-get-ccs-file-list)))
+
+    ;; If we could not find the user sort order config file.
+    ;; We use default list then.
+    (when (= 0 (length real-sort-list))
+      (setq real-sort-list com-css-sort-default-attributes-order))
 
     (dolist (in-line line-list)
       (let ((index -1)
@@ -279,8 +375,8 @@ LINE-LIST : list of line."
         (setq first-word-in-line (string-trim first-word-in-line))
 
         (setq index (cl-position first-word-in-line
-                                 com-css-sort-attributes-order
-                                 :test 'string-match))
+                                 real-sort-list
+                                 :test 'string=))
 
         ;; Add both index and line value to list.
         ;; Treat this as a `pair' data structure.
