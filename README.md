@@ -6,10 +6,16 @@ attribute.<br/><br/>
 
 
 ## How to use? ##
+
+### Alphabetic Order ###
+1. Just set `com-css-sort-sort-type` to 1. 
+
+### Customize Order Your Own ###
 1. Create `sort-order.ccs` file at the version control root directory. 
-You can grab a ccs file from `./ccs_examples/` directory in this repository.
+You can grab a ccs file from `./ccs_examples/` directory in this repository. 
 2. Look at the .ccs file, the order in the file will be the order of the CSS 
 attribute will sort.
+
 
 ## Configuration ##
 Type of sorting algorithm you want CSS attribute to sort.<br/>
