@@ -1,12 +1,12 @@
 # com-css-sort #
 
 com-css-sort stand for Common CSS Sorting. The goal of this project
-is to provide the basic, general, comman way of sorting the CSS
+is to provide the basic, general, common way of sorting the CSS
 attribute.<br/><br/>
 
 
 ## How to use? ##
-1. Create `sort-order.ccs' file at the version control root directory. 
+1. Create `sort-order.ccs` file at the version control root directory. 
 You can grab a ccs file from `./ccs_examples/` directory in this repository.
 2. Look at the .ccs file, the order in the file will be the order of the CSS 
 attribute will sort.
