@@ -1,4 +1,4 @@
-;;; com-css-sort.el --- a simple package                     -*- lexical-binding: t; -*-
+;;; com-css-sort.el --- Common way of sorting the CSS attributes.                     -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2018  Shen, Jen-Chieh
 ;; Created date 2018-04-30 14:26:37
@@ -7,7 +7,7 @@
 ;; Description: Common way of sorting the CSS attributes.
 ;; Keyword: Common CSS Handy Sort Sorting
 ;; Version: 0.0.1
-;; Package-Requires: ((cl-lib "0.5") (emacs "24.4") (s "1.12.0"))
+;; Package-Requires: ((emacs "24.4") (s "1.12.0"))
 ;; URL: https://github.com/jcs090218/com-css-sort
 
 ;; This file is NOT part of GNU Emacs.
@@ -32,22 +32,33 @@
 
 ;;; Code:
 
-(require 'cl-extra)
 (require 's)
+(require 'subr-x)
 
 
-(defvar com-css-sort-sort-type 0
+(defgroup com-css-sort nil
+  "Sort CSS attributes extension"
+  :prefix "com-css-sort-"
+  :group 'editing
+  :link '(url-link :tag "Repository" "https://github.com/jcs090218/com-css-sort.git"))
+
+
+(defcustom com-css-sort-sort-type 'type-sort
   "Type of sorting CSS attributes algorithm going to use to sort.
-0 : Sort by Type Group.
-1 : Sort by Alphabetic Order.")
+'type-sort : Sort by Type Group.
+'alphabetic-sort : Sort by Alphabetic Order."
+  :type 'symbol
+  :group 'com-css-sort)
 
-(defvar com-css-sort-sort-file "sort-order.ccs"
+(defcustom com-css-sort-sort-file "sort-order.config"
   "File to read the order.
 This file should place somewhere path are relative to the
 version control path.
-This wil replace `com-css-sort-default-attributes-order' if it can.")
+This wil replace `com-css-sort-default-attributes-order' if it can."
+  :type 'string
+  :group 'com-css-sort)
 
-(defvar com-css-sort-default-attributes-order
+(defcustom com-css-sort-default-attributes-order
   '("display"
     "position"
     "top"
@@ -125,68 +136,10 @@ This wil replace `com-css-sort-default-attributes-order' if it can.")
     "font-weight"
     "content"
     "quotes")
-  "List of CSS attributes sort order by type.")
+  "List of CSS attributes sort order by type."
+  :type 'list
+  :group 'com-css-sort)
 
-(defvar com-css-sort-vc-list '(".bzr"
-                               ".cvs"
-                               ".git"
-                               ".hg"
-                               ".svn")
-  "Version Control list.")
-
-
-(defun com-css-sort-contain-string (in-sub-str in-str)
-  "Check if a string is a substring of another string.
-Return true if contain, else return false.
-IN-SUB-STR : substring to see if contain in the IN-STR.
-IN-STR : string to check by the IN-SUB-STR."
-  (string-match-p (regexp-quote in-sub-str) in-str))
-
-(defun com-css-sort-get-current-dir ()
-  "Return the string of current directory."
-  default-directory)
-
-(defun com-css-sort-file-directory-exists-p (file-path)
-  "Return `True' if the directory/file exists.
-Return `False' if the directory/file not exists.
-
-FILE-PATH : directory/file path."
-  (equal (file-directory-p file-path) t))
-
-(defun com-css-sort-is-vc-dir-p (dir-path)
-  "Return `True' is version control diectory.
-Return `False' not a version control directory.
-DIR-PATH : directory path."
-
-  (let ((tmp-is-vc-dir nil))
-    (dolist (tmp-vc-type com-css-sort-vc-list)
-      (let ((tmp-check-dir (concat dir-path "/" tmp-vc-type)))
-        (when (com-css-sort-file-directory-exists-p tmp-check-dir)
-          (setq tmp-is-vc-dir t))))
-    ;; Return retult.
-    (equal tmp-is-vc-dir t)))
-
-(defun com-css-sort-up-one-dir-string (dir-path)
-  "Go up one directory and return it directory string.
-DIR-PATH : directory path."
-  ;; Remove the last directory in the path.
-  (when (string-match "\\(.*\\)/" dir-path)
-    (match-string 1 dir-path)))
-
-(defun com-css-sort-vc-root-dir ()
-  "Return version control root directory."
-  (let ((tmp-current-dir (com-css-sort-get-current-dir))
-        (tmp-result-dir ""))
-    (while (com-css-sort-contain-string "/" tmp-current-dir)
-      (when (com-css-sort-is-vc-dir-p tmp-current-dir)
-        ;; Return the result, which is the version control path
-        ;; or failed to find the version control path.
-        (setq tmp-result-dir tmp-current-dir))
-      ;; go up one directory.
-      (setq tmp-current-dir (com-css-sort-up-one-dir-string tmp-current-dir)))
-    ;; NOTE(jenchieh): if you do not like `/' at the end remove
-    ;; concat slash function.
-    (concat tmp-result-dir "/")))
 
 (defun com-css-sort-get-string-from-file (file-path)
   "Return file-path's file content.
@@ -197,7 +150,7 @@ FILE-PATH : file path."
 
 (defun com-css-sort-get-ccs-file-list ()
   "Get the `com-css-sort-sort-file' and turn it into list."
-  (let ((sort-file-path (concat (com-css-sort-vc-root-dir) com-css-sort-sort-file))
+  (let ((sort-file-path (concat (cdr (project-current)) com-css-sort-sort-file))
         (attr-list '())
         (sort-file-content '()))
     (when (file-exists-p sort-file-path)
@@ -341,7 +294,7 @@ LINE-LIST : list of line."
 LST : list of array to do swap action.
 INDEX-A : a index of the element.
 INDEX-B : b index of the element."
-  (rotatef (nth index-a lst) (nth index-b lst)))
+  (cl-rotatef (nth index-a lst) (nth index-b lst)))
 
 (defun com-css-sort-sort-line-list-by-type-group (line-list)
   "Sort line list into type group order.
@@ -387,7 +340,7 @@ LINE-LIST : list of line."
     (let ((index-i 0)
           (flag t))
       (while (and (< index-i (- (length index-list) 1))
-                  (equal flag t))
+                  flag)
 
         ;; Reset flag.
         (setq flag nil)
@@ -467,11 +420,11 @@ NO-BACK-TO-LINE : Do not go back to the original line."
                 ;; NOTE(jenchieh): Design your sort algorithms here
                 ;; depend on the type.
                 (cond (;; OPTION(jenchieh): Sort by Type Group.
-                       (= com-css-sort-sort-type 0)
+                       (string= com-css-sort-sort-type 'type-sort)
                        (progn
                          (setq line-list (com-css-sort-sort-line-list-by-type-group line-list))))
                       (;; OPTION(jenchieh): Sort by Alphabetic Order.
-                       (= com-css-sort-sort-type 1)
+                       (string= com-css-sort-sort-type 'alphabetic-sort)
                        (progn
                          (setq line-list (sort line-list 'string<)))))
 
@@ -484,7 +437,7 @@ NO-BACK-TO-LINE : Do not go back to the original line."
             ;; Then goto next code line.
             (com-css-sort-next-non-blank-or-comment-line)))))
 
-    (when (equal no-back-to-line nil)
+    (when (not no-back-to-line)
       (with-no-warnings
         (goto-line start-line-num))
       (end-of-line))))
