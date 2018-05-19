@@ -61,13 +61,13 @@ Just bind the key if to whatever you feel comfortable with.
 
 ## Screen Shot ##
 ### Before Sotring ###
-<img src="./screenshot/com-css-sort-before.png"/>
+<img src="./screenshot/com-css-sort-before.png" with="200" height="245"/>
 
 ### Type Sorting ###
-<img src="./screenshot/com-css-sort-type-sort.png"/>
+<img src="./screenshot/com-css-sort-type-sort.png" with="200" height="245"/>
 
 ### Alphabetic Sorting ###
-<img src="./screenshot/com-css-sort-alphabetic-sort.png"/>
+<img src="./screenshot/com-css-sort-alphabetic-sort.png"with="200" height="245"/>
 
 
 ## Contribution ##
