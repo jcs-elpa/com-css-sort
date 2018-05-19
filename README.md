@@ -46,6 +46,7 @@ relative path to version control root directory.
 Customize your own sorting order programmatically. If you do not have the
 `sort-order.config' file in the version control root directory then this will be use!
 ```
+;; Default sorting order list.
 (setq com-css-sort-default-attributes-order '("display" "position" "top" "right" "bottom" "left" "float" "clear"
 "visibility" "opacity" "z-index" "margin" "margin-top" "margin-right" "margin-bottom" "margin-left" "outline"
 "border" "border-top" "border-right" "border-bottom" "border-left" "border-width" "border-top-width"
