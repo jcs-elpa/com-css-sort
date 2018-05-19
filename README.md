@@ -1,17 +1,3 @@
-<style>
-  * {
-    box-sizing: border-box;
-  }
-
-  .box-container {
-    
-  }
-
-  .box-item {
-    
-  }
-</style>
-
 # com-css-sort #
 
 com-css-sort stands for Common CSS Sorting. The goal of this project
@@ -78,24 +64,10 @@ Before Sotring <br/>
 <img src="./screenshot/com-css-sort-before.png" with="200" height="245"/>
 
 Type Sorting <br/>
-<img src="./screenshot/com-css-sort-type-sort.png" with="200" height="245"/>
+<img src="./screenshot/com-css-sort-type-sort.png" with="200" height="245" style="float: left;"/>
 
 Alphabetic Sorting <br/>
 <img src="./screenshot/com-css-sort-alphabetic-sort.png" with="200" height="245"/>
-
-<div class="box-container" style="width: 100%; display: flex; flex-direction: row; flex-wrap: wrap;">
-  <div class="box-item" style="flex: 1 1 33.3%; height: 200px; background-color: #ccc; border: 1px solid black;">
-    Before Sotring
-    <img src="./screenshot/com-css-sort-before.png" with="200" height="245"/></div>
-  <div class="box-item" style="flex: 1 1 33.3%; height: 200px; background-color: #ccc; border: 1px solid black;">
-    Type Sorting
-    <img src="./screenshot/com-css-sort-type-sort.png" with="200" height="245"/>
-  </div>
-  <div class="box-item" style="flex: 1 1 33.3%; height: 200px; background-color: #ccc; border: 1px solid black;">
-    Alphabetic Sorting
-    <img src="./screenshot/com-css-sort-alphabetic-sort.png" with="200" height="245"/>
-  </div>
-</div>
 
 
 ## Contribution ##
