@@ -17,7 +17,7 @@ is to provide a basic way of sorting CSS attributes.<br/><br/>
 ```
 (setq com-css-sort-sort-type 'alphabetic-sort)
 ```
-2. Create `sort-order.ccs` file at the version control root directory.
+2. Create `sort-order.config` file at the version control root directory.
 You can grab a ccs file from `./config_examples/` directory in this repository.
 3. Look at the .config file, the order in the file will be the order that
 the CSS attributes will be sorted.
@@ -25,9 +25,9 @@ the CSS attributes will be sorted.
 
 ## Configuration ##
 Type of sorting algorithm you want used when sorting CSS attributes.<br/>
-* 0 : Sort in group type. Use 'sort-order.ccs' if
+* 0 : Sort in group type. Use 'sort-order.config' if
 there is one in the version control root directory. (Default)<br/>
-* 1 : Sort in alphabetic order. The 'sort-order.ccs'
+* 1 : Sort in alphabetic order. The 'sort-order.config'
 file will be ignore and will not do anything.<br/>
 ```
 (setq com-css-sort-sort-type 0)
@@ -36,11 +36,11 @@ file will be ignore and will not do anything.<br/>
 If you don't like the path or file name, you can change it too. This variable is
 relative path to version control root directory.
 ```
-(setq com-css-sort-sort-file "sort-order.ccs")
+(setq com-css-sort-sort-file "sort-order.config")
 ```
 
 Customize your own sorting order programmatically. If you do not have the
-`sort-order.ccs' file in the version control root directory then this will be use!
+`sort-order.config' file in the version control root directory then this will be use!
 ```
 (setq com-css-sort-default-attributes-order '("display" "position" "top" "right" "bottom" "left" "float" "clear"
 "visibility" "opacity" "z-index" "margin" "margin-top" "margin-right" "margin-bottom" "margin-left" "outline"
