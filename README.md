@@ -63,8 +63,8 @@ Customize your own sorting order programmatically. If you do not have the
                                               "caption-side" "table-layout" "border-collapse" "border-spacing" 
                                               "empty-cells" "vertical-align" "text-align" "text-indent" 
                                               "text-transform" "text-decoration" "line-height" "word-spacing" 
-                                              "letter-spacing" "white-space" "color" "font" "font-family" "font-size" 
-                                              "font-weight" "content" "quotes"))
+                                              "letter-spacing" "white-space" "color" "font" "font-family" 
+                                              "font-size" "font-weight" "content" "quotes"))
 ```
 
 
