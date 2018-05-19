@@ -25,12 +25,12 @@ the CSS attributes will be sorted.
 
 ## Configuration ##
 Type of sorting algorithm you want used when sorting CSS attributes.<br/>
-* 0 : Sort in group type. Use 'sort-order.config' if
+* type-sort : Sort in group type. Use 'sort-order.config' if
 there is one in the version control root directory. (Default)<br/>
-* 1 : Sort in alphabetic order. The 'sort-order.config'
+* alphabetic-sort : Sort in alphabetic order. The 'sort-order.config'
 file will be ignore and will not do anything.<br/>
 ```
-(setq com-css-sort-sort-type 0)
+(setq com-css-sort-sort-type 'type-sort)  ;; This is default setting.
 ```
 
 If you don't like the path or file name, you can change it too. This variable is
