@@ -62,8 +62,10 @@ Just bind the key if to whatever you feel comfortable with.
 ## Screen Shot ##
 Before Sotring
 <img src="./screenshot/com-css-sort-before.png"/>
+<br/>
 Type Sorting
 <img src="./screenshot/com-css-sort-type-sort.png"/>
+<br/>
 Alphabetic Sorting
 <img src="./screenshot/com-css-sort-alphabetic-sort.png"/>
 
