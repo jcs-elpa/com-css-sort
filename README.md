@@ -18,7 +18,10 @@ is to provide a basic way of sorting CSS attributes.<br/><br/>
 (setq com-css-sort-sort-type 'alphabetic-sort)
 ```
 2. Create `sort-order.config` file at the version control root directory.
-You can grab a config file from `./config_examples/` directory in this repository.
+You can grab a config file from `./config_examples/` directory in this 
+repository. If the file does not exists, variable list 
+`com-css-sort-default-attributes-order`  will be use as default sorting
+order list.
 3. Look at the .config file, the order in the file will be the order that
 the CSS attributes will be sorted.
 
