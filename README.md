@@ -7,12 +7,19 @@ is to provide a basic way of sorting CSS attributes.<br/><br/>
 ## How to use? ##
 
 ### Alphabetic Order ###
-1. Just set `com-css-sort-sort-type` to 1.
+1. Just set `com-css-sort-sort-type` to type-sort.
+```
+(setq com-css-sort-sort-type 'type-sort)
+```
 
 ### Customize Order Your Own ###
-1. Create `sort-order.ccs` file at the version control root directory.
-You can grab a ccs file from `./ccs_examples/` directory in this repository.
-2. Look at the .ccs file, the order in the file will be the order that
+1. Set `com-css-sort-sort-type` to alphabetic-sort.
+```
+(setq com-css-sort-sort-type 'alphabetic-sort)
+```
+2. Create `sort-order.ccs` file at the version control root directory.
+You can grab a ccs file from `./config_examples/` directory in this repository.
+3. Look at the .config file, the order in the file will be the order that
 the CSS attributes will be sorted.
 
 
