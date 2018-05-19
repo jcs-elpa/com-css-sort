@@ -60,14 +60,14 @@ Just bind the key if to whatever you feel comfortable with.
 ```
 
 ## Screen Shot ##
-### Before Sotring ###
+Before Sotring <br/>
 <img src="./screenshot/com-css-sort-before.png" with="200" height="245"/>
 
-### Type Sorting ###
+Type Sorting <br/>
 <img src="./screenshot/com-css-sort-type-sort.png" with="200" height="245"/>
 
-### Alphabetic Sorting ###
-<img src="./screenshot/com-css-sort-alphabetic-sort.png"with="200" height="245"/>
+Alphabetic Sorting <br/>
+<img src="./screenshot/com-css-sort-alphabetic-sort.png" with="200" height="245"/>
 
 
 ## Contribution ##
