@@ -30,7 +30,8 @@ there is one in the version control root directory. (Default)<br/>
 * alphabetic-sort : Sort in alphabetic order. The 'sort-order.config'
 file will be ignore and will not do anything.<br/>
 ```
-(setq com-css-sort-sort-type 'type-sort)  ;; This is default setting.
+(setq com-css-sort-sort-type 'type-sort)        ;; Type Sorting
+(setq com-css-sort-sort-type 'alphabetic-sort)  ;; Alphabetic Sorting
 ```
 
 If you don't like the path or file name, you can change it too. This variable is
