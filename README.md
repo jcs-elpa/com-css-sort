@@ -12,7 +12,7 @@ is to provide a basic way of sorting CSS attributes.<br/><br/>
 (setq com-css-sort-sort-type 'type-sort)
 ```
 
-### Customize Order Your Own ###
+### Type Order / Customize Order Your Own ###
 1. Set `com-css-sort-sort-type` to alphabetic-sort.
 ```
 (setq com-css-sort-sort-type 'alphabetic-sort)
