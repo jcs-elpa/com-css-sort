@@ -7,15 +7,15 @@ is to provide a basic way of sorting CSS attributes.<br/><br/>
 ## How to use? ##
 
 ### Alphabetic Order ###
-1. Just set `com-css-sort-sort-type` to type-sort.
+1. Just set `com-css-sort-sort-type` to alphabetic-sort.
 ```
-(setq com-css-sort-sort-type 'type-sort)
+(setq com-css-sort-sort-type 'alphabetic-sort)
 ```
 
 ### Type Order / Customize Order Your Own ###
-1. Set `com-css-sort-sort-type` to alphabetic-sort.
+1. Set `com-css-sort-sort-type` to type-sort.
 ```
-(setq com-css-sort-sort-type 'alphabetic-sort)
+(setq com-css-sort-sort-type 'type-sort)
 ```
 2. Create `sort-order.config` file at the version control root directory.
 You can grab a config file from `./config_examples/` directory in this 
