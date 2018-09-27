@@ -164,7 +164,6 @@ FILE-PATH : file path."
 ;;;###autoload
 (defun com-css-sort-move-line-up ()
   "Move up the current line."
-  (interactive)
   (transpose-lines 1)
   (forward-line -2)
   (indent-according-to-mode))
@@ -172,7 +171,6 @@ FILE-PATH : file path."
 ;;;###autoload
 (defun com-css-sort-move-line-down ()
   "Move down the current line."
-  (interactive)
   (forward-line 1)
   (transpose-lines 1)
   (forward-line -1)
@@ -181,9 +179,8 @@ FILE-PATH : file path."
 ;;;###autoload
 (defun com-css-sort-back-to-indentation-or-beginning ()
   "Toggle between first character and beginning of line."
-  (interactive)
-  (if (= (point) (progn (back-to-indentation) (point)))
-      (beginning-of-line)))
+  (when (= (point) (progn (back-to-indentation) (point)))
+    (beginning-of-line)))
 
 (defun com-css-sort-get-current-line ()
   "Return the current line into string."
@@ -202,7 +199,6 @@ FILE-PATH : file path."
 ;;;###autoload
 (defun com-css-sort-goto-first-char-in-line ()
   "Goto beginning of line but ignore 'empty characters'(spaces/tabs)."
-  (interactive)
   (com-css-sort-back-to-indentation-or-beginning)
   (when (com-css-sort-is-beginning-of-line-p)
     (com-css-sort-back-to-indentation-or-beginning)))
@@ -258,7 +254,6 @@ Depends on if we meet a empty line or a comment line."
 (defun com-css-sort-next-blank-or-comment-line ()
   "Move to the next line containing nothing but whitespace or \
 first character is a comment line."
-  (interactive)
   (forward-line 1)
   (while (and (not (com-css-sort-current-line-empty-p))
               (not (com-css-sort-currnet-line-not-attribute-comment-line)))
@@ -268,7 +263,6 @@ first character is a comment line."
 (defun com-css-sort-next-non-blank-or-comment-line ()
   "Move to the next line that is exactly the code.
 Not the comment or empty line."
-  (interactive)
   (forward-line 1)
   (while (and (or (com-css-sort-current-line-empty-p)
                   (com-css-sort-currnet-line-not-attribute-comment-line))
@@ -340,17 +334,21 @@ LINE-LIST : list of line."
         ;; Get the type which is usually the first word.
         (setq first-word-in-line (nth 0 line-split-string))
 
-        ;; Trim the white space.
+        ;; Trim the whitespaces or tabs.
         (setq first-word-in-line (string-trim first-word-in-line))
 
         (setq index (cl-position first-word-in-line
                                  real-sort-list
                                  :test 'string=))
 
-        ;; Add both index and line value to list.
-        ;; Treat this as a `pair' data structure.
-        (push index index-list)
-        (push in-line return-line-list)))
+        (if (numberp index)
+            (progn
+              ;; Add both index and line value to list.
+              ;; Treat this as a `pair' data structure.
+              (push index index-list)
+              (push in-line return-line-list))
+          (progn
+            (error "You try to sort an CSS attribute that does not in the sort list : %s" first-word-in-line)))))
 
     ;; Bubble sort the elements.
     (let ((index-i 0)
