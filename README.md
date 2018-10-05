@@ -1,5 +1,7 @@
 # com-css-sort #
 
+[![MELPA](https://melpa.org/packages/com-css-sort-badge.svg)](https://melpa.org/#/com-css-sort)
+
 com-css-sort stands for Common CSS Sorting. The goal of this project
 is to provide a basic way of sorting CSS attributes.<br/><br/>
 
