@@ -40,7 +40,7 @@
   "Sort CSS attributes extension"
   :prefix "com-css-sort-"
   :group 'editing
-  :link '(url-link :tag "Repository" "https://github.com/jcs090218/com-css-sort.git"))
+  :link '(url-link :tag "Repository" "https://github.com/jcs090218/com-css-sort"))
 
 
 (defcustom com-css-sort-sort-type 'type-sort
