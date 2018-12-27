@@ -4,8 +4,7 @@
 [![MELPA](https://melpa.org/packages/com-css-sort-badge.svg)](https://melpa.org/#/com-css-sort)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-com-css-sort stands for Common CSS Sorting. The goal of this project
-is to provide a basic way of sorting CSS attributes.<br/><br/>
+Common way of sorting the CSS attributes.<br/><br/>
 
 
 ## How to use? ##
