@@ -1,8 +1,9 @@
-# com-css-sort #
-
 [![Build Status](https://travis-ci.com/jcs090218/com-css-sort.svg?branch=master)](https://travis-ci.com/jcs090218/com-css-sort)
 [![MELPA](https://melpa.org/packages/com-css-sort-badge.svg)](https://melpa.org/#/com-css-sort)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+
+# com-css-sort #
 
 Common way of sorting the CSS attributes.<br/><br/>
 
