@@ -12,13 +12,13 @@ Common way of sorting the CSS attributes.<br/><br/>
 
 ### Alphabetic Order ###
 1. Just set `com-css-sort-sort-type` to alphabetic-sort.
-```
+```el
 (setq com-css-sort-sort-type 'alphabetic-sort)
 ```
 
 ### Type Order / Customize Order Your Own ###
 1. Set `com-css-sort-sort-type` to type-sort.
-```
+```el
 (setq com-css-sort-sort-type 'type-sort)
 ```
 2. Create `sort-order.config` file at the version control root directory.
@@ -36,20 +36,20 @@ Type of sorting algorithm you want used when sorting CSS attributes.<br/>
 there is one in the version control root directory. (Default)<br/>
 * alphabetic-sort : Sort in alphabetic order. The 'sort-order.config'
 file will be ignore and will not do anything.<br/>
-```
+```el
 (setq com-css-sort-sort-type 'type-sort)        ;; Type Sorting
 (setq com-css-sort-sort-type 'alphabetic-sort)  ;; Alphabetic Sorting
 ```
 
 If you don't like the path or file name, you can change it too. This variable is
 relative path to version control root directory.
-```
+```el
 (setq com-css-sort-sort-file "sort-order.config")
 ```
 
 Customize your own sorting order programmatically. If you do not have the
 `sort-order.config' file in the version control root directory then this will be use!
-```
+```el
 ;; Default sorting order list.
 (setq com-css-sort-default-attributes-order '("display" "position" "top" "right" "bottom" "left" "float" "clear"
                                               "visibility" "opacity" "z-index" "margin" "margin-top" 
@@ -74,7 +74,7 @@ Customize your own sorting order programmatically. If you do not have the
 
 ## Key Bindings ##
 Just bind the key if to whatever you feel comfortable with.
-```
+```el
 ;; Sort attributes inside block.
 (define-key css-mode-map (kbd "C-k s") #'com-css-sort-attributes-block)
 
