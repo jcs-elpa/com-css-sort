@@ -5,7 +5,7 @@
 
 # com-css-sort #
 
-Common way of sorting the CSS attributes.<br/><br/>
+Common way of sorting the CSS attributes.
 
 
 ## How to use? ##
