@@ -82,7 +82,7 @@ Just bind the key if to whatever you feel comfortable with.
 (define-key css-mode-map (kbd "C-k d") #'com-css-sort-attributes-document)
 ```
 
-## Screen Shot ##
+## Screenshot ##
 Before Sotring                                                            |  Type Sorting                                                                |  Alphabetic Sorting  |
 :------------------------------------------------------------------------:|:----------------------------------------------------------------------------:|:--------------------:|
 <img src="./screenshot/com-css-sort-before.png" with="200" height="245"/> | <img src="./screenshot/com-css-sort-type-sort.png" with="200" height="245"/> | <img src="./screenshot/com-css-sort-alphabetic-sort.png" with="200" height="245"/>
