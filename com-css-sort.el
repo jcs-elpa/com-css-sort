@@ -7,7 +7,7 @@
 ;; Description: Common way of sorting the CSS attributes.
 ;; Keyword: Common CSS Handy Sort Sorting
 ;; Version: 0.0.1
-;; Package-Requires: ((emacs "24.4") (s "1.12.0"))
+;; Package-Requires: ((emacs "24.4") (s "1.12.0") (cl-lib "0.6"))
 ;; URL: https://github.com/jcs090218/com-css-sort
 
 ;; This file is NOT part of GNU Emacs.
@@ -32,6 +32,7 @@
 
 ;;; Code:
 
+(require 'cl-lib)
 (require 's)
 (require 'subr-x)
 
