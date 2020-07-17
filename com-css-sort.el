@@ -1,4 +1,4 @@
-;;; com-css-sort.el --- Common way of sorting the CSS attributes.  -*- lexical-binding: t; -*-
+;;; com-css-sort.el --- Common way of sorting the CSS attributes  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2018  Shen, Jen-Chieh
 ;; Created date 2018-04-30 14:26:37
@@ -7,7 +7,7 @@
 ;; Description: Common way of sorting the CSS attributes.
 ;; Keyword: Common CSS Handy Sort Sorting
 ;; Version: 0.0.5
-;; Package-Requires: ((emacs "24.4") (s "1.12.0") (cl-lib "0.6"))
+;; Package-Requires: ((emacs "25.1") (s "1.12.0"))
 ;; URL: https://github.com/jcs090218/com-css-sort
 
 ;; This file is NOT part of GNU Emacs.
@@ -36,13 +36,11 @@
 (require 's)
 (require 'subr-x)
 
-
 (defgroup com-css-sort nil
   "Sort CSS attributes extension"
   :prefix "com-css-sort-"
   :group 'editing
   :link '(url-link :tag "Repository" "https://github.com/jcs090218/com-css-sort"))
-
 
 (defcustom com-css-sort-sort-type 'type-sort
   "Type of sorting CSS attributes algorithm going to use to sort.
@@ -142,52 +140,55 @@ This wil replace `com-css-sort-default-attributes-order' if it can."
   :type 'list
   :group 'com-css-sort)
 
+;;; Util
 
-(defun com-css-sort-get-string-from-file (file-path)
+(defun com-css-sort--goto-line (ln)
+  "Goto LN line number."
+  (goto-char (point-min)) (forward-line (1- ln)))
+
+(defun com-css-sort--get-string-from-file (file-path)
   "Return FILE-PATH's file content."
   (with-temp-buffer
     (insert-file-contents file-path)
     (buffer-string)))
 
-(defun com-css-sort-get-ccs-file-list ()
+(defun com-css-sort--get-ccs-file-list ()
   "Get the `com-css-sort-sort-file' and turn it into list."
   (let ((sort-file-path (concat (cdr (project-current)) com-css-sort-sort-file))
         (attr-list '())
         (sort-file-content '()))
     (when (file-exists-p sort-file-path)
       ;; Get the file content as buffer.
-      (setq sort-file-content (com-css-sort-get-string-from-file sort-file-path))
+      (setq sort-file-content (com-css-sort--get-string-from-file sort-file-path))
       ;; Split the file content buffer into list.
       (setq attr-list (split-string sort-file-content)))
     ;; Return the sort order list.
     attr-list))
 
-(defun com-css-sort-back-to-indentation-or-beginning ()
+(defun com-css-sort--back-to-indentation-or-beginning ()
   "Toggle between first character and beginning of line."
-  (when (= (point) (progn (back-to-indentation) (point)))
-    (beginning-of-line)))
+  (when (= (point) (progn (back-to-indentation) (point))) (beginning-of-line)))
 
-(defun com-css-sort-get-current-line ()
+(defun com-css-sort--get-current-line ()
   "Return the current line into string."
   (thing-at-point 'line t))
 
-(defun com-css-sort-is-beginning-of-line-p ()
+(defun com-css-sort--is-beginning-of-line-p ()
   "Is at the beginning of line?"
   (save-excursion
-    (let ((current-point nil)
-          (begin-line-point nil))
+    (let ((current-point nil) (begin-line-point nil))
       (setq current-point (point))
       (beginning-of-line)
       (setq begin-line-point (point))
       (= begin-line-point current-point))))
 
-(defun com-css-sort-goto-first-char-in-line ()
+(defun com-css-sort--goto-first-char-in-line ()
   "Goto beginning of line but ignore 'empty characters'(spaces/tabs)."
-  (com-css-sort-back-to-indentation-or-beginning)
-  (when (com-css-sort-is-beginning-of-line-p)
-    (com-css-sort-back-to-indentation-or-beginning)))
+  (com-css-sort--back-to-indentation-or-beginning)
+  (when (com-css-sort--is-beginning-of-line-p)
+    (com-css-sort--back-to-indentation-or-beginning)))
 
-(defun com-css-sort-current-line-empty-p ()
+(defun com-css-sort--current-line-empty-p ()
   "Current line empty, but accept spaces/tabs in there.  (not absolute)."
   (save-excursion
     (beginning-of-line)
@@ -202,28 +203,27 @@ This wil replace `com-css-sort-default-attributes-order' if it can."
 If non-nil, attribute line.
 If nil, is not attribute line."
   ;; Check attribute line by simply searching key character ':' colon.
-  (string-match-p ":" (com-css-sort-get-current-line)))
+  (string-match-p ":" (com-css-sort--get-current-line)))
 
 (defun com-css-sort--currnet-line-not-attribute-comment-line ()
   "Check if current line is a 'pure' comment line, not an attribute comment line."
   (save-excursion
-    (com-css-sort-goto-first-char-in-line)
-    (forward-char 1)
-    (forward-char 1)
+    (com-css-sort--goto-first-char-in-line)
+    (forward-char 2)
     (and
      ;; First check if is comment line.
      (com-css-sort--is-inside-comment-block-p)
      ;; Then check if current line attribute line.
      (not (com-css-sort--attribute-line)))))
 
-(defun com-css-sort-get-sort-list-until-empty-or-comment-line ()
+(defun com-css-sort--get-sort-list-until-empty-or-comment-line ()
   "Get the list we want to sort.
 Depends on if we meet a empty line or a comment line."
   (save-excursion
     (let ((line-list '()))
-      (while (and (not (com-css-sort-current-line-empty-p))
+      (while (and (not (com-css-sort--current-line-empty-p))
                   (not (com-css-sort--currnet-line-not-attribute-comment-line)))
-        (let ((current-line (com-css-sort-get-current-line)))
+        (let ((current-line (com-css-sort--get-current-line)))
           (when (not (string-match "}" current-line))
             ;; Push the line into list.
             (push current-line line-list)))
@@ -234,10 +234,10 @@ Depends on if we meet a empty line or a comment line."
       line-list)))
 
 (defun com-css-sort--next-blank-or-comment-line ()
-  "Move to the next line containing nothing but whitespace or \
-first character is a comment line."
+  "Move to the next line containing nothing but whitespace or first character \
+is a comment line."
   (forward-line 1)
-  (while (and (not (com-css-sort-current-line-empty-p))
+  (while (and (not (com-css-sort--current-line-empty-p))
               (not (com-css-sort--currnet-line-not-attribute-comment-line)))
     (forward-line 1)))
 
@@ -245,14 +245,13 @@ first character is a comment line."
   "Move to the next line that is exactly the code.
 Not the comment or empty line."
   (forward-line 1)
-  (while (and (or (com-css-sort-current-line-empty-p)
+  (while (and (or (com-css-sort--current-line-empty-p)
                   (com-css-sort--currnet-line-not-attribute-comment-line))
               (not (= (point) (point-max))))
     (forward-line 1)))
 
 (defun com-css-sort--beginning-of-attribute-block (start)
-  "Get the beginning of the attribute block.
-START : current point."
+  "Get the beginning of the attribute block from current point (START)."
   (goto-char start)
   (search-backward "{")
   (forward-line 1)
@@ -260,8 +259,7 @@ START : current point."
   (point))
 
 (defun com-css-sort--end-of-attribute-block (start)
-  "Get the end of the attribute block.
-START : current point."
+  "Get the end of the attribute block from current point (START)."
   (goto-char start)
   (re-search-forward "[{}]")
   (forward-line -1)
@@ -270,9 +268,7 @@ START : current point."
 
 (defun com-css-sort--insert-line-list (line-list)
   "Insert list of line, LINE-LIST."
-  (save-excursion
-    (dolist (line line-list)
-      (insert line))))
+  (save-excursion (dolist (line line-list) (insert line))))
 
 (defun com-css-sort--swap-list-element (lst index-a index-b)
   "Swap the element by using two index.
@@ -282,17 +278,14 @@ INDEX-B : b index of the element."
   (cl-rotatef (nth index-a lst) (nth index-b lst)))
 
 (defun com-css-sort-sort-line-list-by-type-group (line-list)
-  "Sort line list into type group order.
-LINE-LIST : list of line."
+  "Sort LINE-LIST into type group order."
   (let (;; List of index, corresponds to true value. (line)
         (index-list '())
         ;; Final return list.
         (return-line-list '())
-        ;; List we are going to actually use it in our algorithm.
-        ;; This will determine if we use the users file or
-        ;; use the default file.
-        (real-sort-list (com-css-sort-get-ccs-file-list)))
-
+        ;; List we are going to actually use it in our algorithm. This will determine
+        ;; if we use the users file or use the default file.
+        (real-sort-list (com-css-sort--get-ccs-file-list)))
     ;; If we could not find the user sort order config file.
     ;; We use default list then.
     (when (= 0 (length real-sort-list))
@@ -317,55 +310,34 @@ LINE-LIST : list of line."
         ;; Trim the whitespaces or tabs.
         (setq first-word-in-line (string-trim first-word-in-line))
 
-        (setq index (cl-position first-word-in-line
-                                 real-sort-list
-                                 :test 'string=))
+        (setq index (cl-position first-word-in-line real-sort-list :test 'string=))
 
         (if (numberp index)
             (progn
-              ;; Add both index and line value to list.
-              ;; Treat this as a `pair' data structure.
+              ;; Add both index and line value to list. Treat this as a `pair'
+              ;; data structure.
               (push index index-list)
               (push in-line return-line-list))
-          (error "You try to sort an CSS attribute that does not in the sort list : %s" first-word-in-line))))
+          (user-error "[WARNINGS] You try to sort an CSS attribute that does not in the sort list : %s" first-word-in-line))))
 
     ;; Bubble sort the elements.
-    (let ((index-i 0)
-          (flag t))
-      (while (and (< index-i (- (length index-list) 1))
-                  flag)
-
-        ;; Reset flag.
+    (let ((index-i 0) (flag t))
+      (while (and (< index-i (- (length index-list) 1)) flag)
         (setq flag nil)
-
         (let ((index-j 0))
           (while (< index-j (- (- (length index-list) index-i) 1))
-
-            (let ((index-a index-j)
-                  (index-b (1+ index-j))
-                  (value-a -1)
-                  (value-b -1))
-              (setq value-a (nth index-a index-list))
-              (setq value-b (nth index-b index-list))
-
+            (let* ((index-a index-j)
+                   (index-b (1+ index-j))
+                   (value-a (nth index-a index-list))
+                   (value-b (nth index-b index-list)))
               (when (< value-b value-a)
                 ;; Swap index.
-                (com-css-sort--swap-list-element index-list
-                                                 index-b
-                                                 index-a)
+                (com-css-sort--swap-list-element index-list index-b index-a)
                 ;; Swap value with same index.
-                ;; NOTE: we do this much is all because
-                ;; of this line of code.
-                (com-css-sort--swap-list-element return-line-list
-                                                 index-b
-                                                 index-a)
-
-                ;; Set flag.
+                ;; NOTE: we do this much is all because of this line of code.
+                (com-css-sort--swap-list-element return-line-list index-b index-a)
                 (setq flag t)))
-
-            ;; inc j.
             (setq index-j (1+ index-j))))
-        ;; inc i.
         (setq index-i (1+ index-i))))
 
     ;; Return the sorted list.
@@ -376,7 +348,7 @@ LINE-LIST : list of line."
   "Sort CSS attributes in the block.
 NO-BACK-TO-LINE : Do not go back to the original line."
   (interactive)
-  (let ((start-line-num (string-to-number (format-mode-line "%l"))))
+  (let ((start-ln (line-number-at-pos nil t)))
     (save-excursion
       (save-window-excursion
         ;; Ready to start sorting in the block.
@@ -388,7 +360,7 @@ NO-BACK-TO-LINE : Do not go back to the original line."
 
           (while (< (point) end)
             ;; Get the empty/comment block of line list for next use.
-            (let ((line-list (com-css-sort-get-sort-list-until-empty-or-comment-line))
+            (let ((line-list (com-css-sort--get-sort-list-until-empty-or-comment-line))
                   (end-region-point nil))
               ;; Get the current point again.
               (setq current (point))
@@ -399,9 +371,9 @@ NO-BACK-TO-LINE : Do not go back to the original line."
 
                   ;; Find the last point
                   (let ((record-point (point)))
-                    (when (com-css-sort-current-line-empty-p)
+                    (when (com-css-sort--current-line-empty-p)
                       (forward-line -1)
-                      (if (string-match "}" (com-css-sort-get-current-line))
+                      (if (string-match "}" (com-css-sort--get-current-line))
                           (beginning-of-line)
                         ;; Back to point if not true.
                         (goto-char record-point))))
@@ -410,16 +382,12 @@ NO-BACK-TO-LINE : Do not go back to the original line."
                 ;; Delete region.
                 (delete-region current end-region-point)
 
-                ;; NOTE: Design your sort algorithms here
-                ;; depend on the type.
-                (cond (;; OPTION: Sort by Type Group.
-                       (string= com-css-sort-sort-type 'type-sort)
-                       (progn
-                         (setq line-list (com-css-sort-sort-line-list-by-type-group line-list))))
-                      (;; OPTION: Sort by Alphabetic Order.
-                       (string= com-css-sort-sort-type 'alphabetic-sort)
-                       (progn
-                         (setq line-list (sort line-list 'string<)))))
+                ;; NOTE: Design your sort algorithms here depend on the type.
+                (cl-case com-css-sort-sort-type
+                  ('type-sort  ; OPTION: Sort by Type Group.
+                   (setq line-list (com-css-sort-sort-line-list-by-type-group line-list)))
+                  ('alphabetic-sort  ; OPTION: Sort by Alphabetic Order.
+                   (setq line-list (sort line-list 'string<))))
 
                 ;; Insert the lines.
                 (com-css-sort--insert-line-list line-list)))
@@ -430,30 +398,23 @@ NO-BACK-TO-LINE : Do not go back to the original line."
             ;; Then goto next code line.
             (com-css-sort--next-non-blank-or-comment-line)))))
 
-    (when (not no-back-to-line)
-      (with-no-warnings
-        (goto-line start-line-num))
+    (unless no-back-to-line
+      (com-css-sort--goto-line start-ln)
       (end-of-line))))
 
 ;;;###autoload
 (defun com-css-sort-attributes-document ()
   "Sort CSS attributes the whole documents."
   (interactive)
-  (let ((start-line-num (string-to-number (format-mode-line "%l"))))
+  (let ((start-ln (line-number-at-pos nil t)))
     (save-excursion
       (save-window-excursion
         (goto-char (point-min))
-
-        (while (ignore-errors (search-forward "}"))
-          ;; Sort once.
-          (com-css-sort-attributes-block t)
-
-          ;; Goto next blank line
+        (while (search-forward "}" nil t)
+          (com-css-sort-attributes-block t)  ; Sort once.
           (com-css-sort--next-blank-or-comment-line))))
-
     ;; make sure go back to the starting line.
-    (with-no-warnings
-      (goto-line start-line-num))
+    (com-css-sort--goto-line start-ln)
     (end-of-line)))
 
 (provide 'com-css-sort)
