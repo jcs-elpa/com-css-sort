@@ -152,6 +152,8 @@ This wil replace `com-css-sort-default-attributes-order' if it can."
     (insert-file-contents file-path)
     (buffer-string)))
 
+;;; Core
+
 (defun com-css-sort--get-ccs-file-list ()
   "Get the `com-css-sort-sort-file' and turn it into list."
   (let ((sort-file-path (concat (cdr (project-current)) com-css-sort-sort-file))
