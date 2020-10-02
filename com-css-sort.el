@@ -386,9 +386,9 @@ NO-BACK-TO-LINE : Do not go back to the original line."
 
                 ;; NOTE: Design your sort algorithms here depend on the type.
                 (cl-case com-css-sort-sort-type
-                  ('type-sort  ; OPTION: Sort by Type Group.
+                  (type-sort  ; OPTION: Sort by Type Group.
                    (setq line-list (com-css-sort-sort-line-list-by-type-group line-list)))
-                  ('alphabetic-sort  ; OPTION: Sort by Alphabetic Order.
+                  (alphabetic-sort  ; OPTION: Sort by Alphabetic Order.
                    (setq line-list (sort line-list 'string<))))
 
                 ;; Insert the lines.
