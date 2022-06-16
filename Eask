@@ -2,6 +2,9 @@
          "0.0.7"
          "Common way of sorting the CSS attributes")
 
+(website-url "https://github.com/jcs-elpa/com-css-sort")
+(keywords "Common" "CSS" "Handy" "Sort" "Sorting")
+
 (package-file "com-css-sort.el")
 
 (source "melpa")

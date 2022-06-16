@@ -4,11 +4,10 @@
 ;; Created date 2018-04-30 14:26:37
 
 ;; Author: Shen, Jen-Chieh <jcs090218@gmail.com>
-;; Description: Common way of sorting the CSS attributes.
-;; Keyword: Common CSS Handy Sort Sorting
+;; URL: https://github.com/jcs-elpa/com-css-sort
 ;; Version: 0.0.7
 ;; Package-Requires: ((emacs "25.1") (s "1.12.0"))
-;; URL: https://github.com/jcs090218/com-css-sort
+;; Keywords: Common CSS Handy Sort Sorting
 
 ;; This file is NOT part of GNU Emacs.
 
