@@ -7,7 +7,7 @@
 ;; URL: https://github.com/jcs-elpa/com-css-sort
 ;; Version: 0.0.7
 ;; Package-Requires: ((emacs "25.1") (s "1.12.0"))
-;; Keywords: Common CSS Handy Sort Sorting
+;; Keywords: convenience matching css sort
 
 ;; This file is NOT part of GNU Emacs.
 
