@@ -3,7 +3,7 @@
          "Common way of sorting the CSS attributes")
 
 (website-url "https://github.com/jcs-elpa/com-css-sort")
-(keywords "Common" "CSS" "Handy" "Sort" "Sorting")
+(keywords "convenience" "matching" "css" "sort")
 
 (package-file "com-css-sort.el")
 
