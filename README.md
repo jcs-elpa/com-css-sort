@@ -7,7 +7,7 @@
 
 [![CI](https://github.com/jcs-elpa/com-css-sort/actions/workflows/test.yml/badge.svg)](https://github.com/jcs-elpa/com-css-sort/actions/workflows/test.yml)
 
-| Before Sotring                                  |  Type Sorting                                      |  Alphabetic Sorting                                      |
+| Before Sorting                                  |  Type Sorting                                      |  Alphabetic Sorting                                      |
 |:-----------------------------------------------:|:--------------------------------------------------:|:--------------------------------------------------------:|
 |<img src="./etc/com-css-sort-before.png"/>|<img src="./etc/com-css-sort-type-sort.png"/>|<img src="./etc/com-css-sort-alphabetic-sort.png"/>|
 
