@@ -1,6 +1,6 @@
 ;;; com-css-sort.el --- Common way of sorting the CSS attributes  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018  Shen, Jen-Chieh
+;; Copyright (C) 2018-2024  Shen, Jen-Chieh
 ;; Created date 2018-04-30 14:26:37
 
 ;; Author: Shen, Jen-Chieh <jcs090218@gmail.com>
