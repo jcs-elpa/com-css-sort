@@ -1,3 +1,5 @@
+;; -*- mode: eask; lexical-binding: t -*-
+
 (package "com-css-sort"
          "0.0.7"
          "Common way of sorting the CSS attributes")
